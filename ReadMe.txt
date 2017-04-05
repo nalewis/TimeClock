@@ -6,5 +6,3 @@ run npm install to install modules from package.json
 
 //bootstrap example html
 http://getbootstrap.com/examples/theme/
-
-To include bootstrap, make sure to link to the css and js folders in src (relative path at the moment)
