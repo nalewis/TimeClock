@@ -3,10 +3,12 @@ CREATE TABLE Employees
 	FirstName VARCHAR(20) NOT NULL,
 	LastName VARCHAR(20) NOT NULL,
     UserID VARCHAR(15) NOT NULL,
+	Email VARCHAR(20) NOT NULL
     Wage FLOAT NOT NULL,
     DepartmentID VARCHAR(20) NOT NULL,
     Username VARCHAR(20) NOT NULL,
     Password VARCHAR(20) NOT NULL,
+	IsAdmin BOOLEAN,
     PRIMARY KEY(UserID)
 );
 CREATE TABLE Customers

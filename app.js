@@ -38,15 +38,39 @@ io.on('connection', function(socket){
 	
     socket.on('clockTime', function(id){
 		console.log(id);
-		clocktime(id);
+		var callback = function(){
+			socket.emit('clockTimeResponse');
+		}
+		clocktime(callback, id);
+		
 		socket.emit('clockTimeResponse', id);
 	});
 	socket.on('getClockedIn', function(){
 		var callback = function(resp){
-			console.log("Get Test !!!! " + resp);
 			socket.emit('getClockedInResponse', resp);
 		}
 		getClockedIn(callback);
+	});
+		
+	socket.on('register', function(user){
+		var callback = function(resp){
+			socket.emit('registerResponse', resp);
+		}
+		registerUser(callback, user);
+	});
+	
+	socket.on('getUsers', function(){
+		var callback = function(resp){
+			socket.emit('getUsersResponse', resp);
+		}
+		getUsers(callback);
+	});
+	
+	socket.on('getUser', function(id){
+		var callback = function(resp){
+			socket.emit('getUserResponse', resp);
+		}
+		getUser(callback, id);
 	});
 		
     socket.on('login', function (email, password) {
@@ -143,7 +167,7 @@ function isManager(email,password){
         })
 }
 //PostObject Methods
-function clocktime(pastId){
+function clocktime(callback, pastId){
 	var userId = mysql.escape(pastId);
 	if(userId != ""){
 		var check = "select * from TimeEntries where EndTime is NULL and UserID = " + userId;
@@ -151,19 +175,26 @@ function clocktime(pastId){
 		connection.query(check, function (err, result) {
 			if(err){
 				console.log("clockTime select time entry" + err + check);
-				
 			} else {
 				console.log(result);
 				if(result[0] != undefined){
 					console.log("Existing entry");
-					check = "update TimeEntries set EndTime=sysdate(), hours=round(timestampdiff(minute, StartTime, EndTime)/60, 1) where UserID = " + userId + " and EndTime is NULL";
+					/*var d1 = new Date(result[0]["EndTime"]);
+					var d2 = new Date(result[0]["StartTime"]);
+					var diff = d1-d2;
+					console.log(d1 + " " + diff);
+					check = "update TimeEntries set EndTime=sysdate(), Hours=" + diff + ", where UserID = " + userId + " and EndTime is NULL";*/
+					check = "update TimeEntries set EndTime=sysdate(), Hours=timestampdiff(minute, StartTime, EndTime)/60 where UserID = " + userId + " and EndTime is NULL";
+					console.log(check);
 				} else {
 					console.log("New entry");
 					check = "insert into TimeEntries (UserID, StartTime) values (" + userId + ",sysdate())";
 				}
 				connection.query(check, function (err, result) {
 					if(err){
-						console.log("clocktime phase 2" + err + check);
+						console.log("clocktime phase 2: " + err + check);
+					} else {
+						callback();
 					}
 				});
 			}
@@ -181,6 +212,70 @@ function getClockedIn(callback){
 			if(callback){
 				callback(result);
 			}
+		}
+	});
+}
+
+function registerUser(callback, user){
+	user = JSON.parse(user);
+	console.log(user);
+	var isAdmin = false;
+	if(user["role"] == "Admin"){
+		isAdmin = true;
+	}
+	var sql = "Insert into Employees (FirstName, LastName, UserID, Email, Wage, DepartmentID, Username, Password, IsAdmin) VALUES ('"
+	+ user["firstName"] + "', '" + user["lastName"] + "', " + user["uid"] + ", '" + user["email"] + "', '" + user["wage"] + "', '" + user["depId"]
+	+ "', '" + user["username"] + "', '" + user["pass"] + "', " + isAdmin + ")";
+	connection.query(sql, function (err, result) {
+		if(err){
+			console.log("Register user error; " + err + sql);
+		} else {
+			console.log("Register user result: " + result);
+			if(callback){
+				callback(result);
+			}
+		}
+	});
+}
+
+function getUsers(callback){
+	console.log('hi');
+	var check = "select * from Employees";
+	connection.query(check, function (err, result) {
+		if(err){
+			console.log("Get Users error: " + err + check);
+		} else {
+			console.log(result);
+			callback(result);
+		}
+	});
+}
+
+function getUser(callback, id){
+	var sql = "Select * from Employees where UserID = " + id;
+	var userInfo = {
+		"user" : [],
+		"timeEntries" : []
+	};
+	connection.query(sql, function (err, result) {
+		if(err){
+			console.log("Get user error: " + err + sql);
+		} else {
+			console.log("Get User Result: " + result);
+			userInfo["user"] = result;
+			
+				sql = "select * from TimeEntries where EndTime is not NULL and UserID = " + id;
+	
+				connection.query(sql, function (err, result) {
+					if(err){
+						console.log("Get user error: " + err + sql);
+					} else {
+						console.log("Get User Result: " + result);
+						userInfo["timeEntries"] = result;
+
+						callback(JSON.stringify(userInfo));
+					}
+				});
 		}
 	});
 }

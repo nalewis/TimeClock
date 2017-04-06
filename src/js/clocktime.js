@@ -12,6 +12,7 @@ $(document).ready(function() {
 	socket.on("clockTimeResponse", function(data){
 		console.log(data);
 		reloadClockedIn();
+		location.reload();
 	});
 	
 	socket.on("getClockedInResponse", function(responses){

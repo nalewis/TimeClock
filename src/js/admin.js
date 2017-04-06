@@ -4,23 +4,22 @@ $(document).ready(function() {
 	console.log("ready");
 
 	$("#report").click(function() {
-		window.location.href = '../html/report.html';
-		socket.emit("clockTime", $("#clock").val());
+		window.location.href = '/Admin/report.html';
 	});
 	
-	socket.on("clockTimeResponse", function(data){
-		console.log(data);
-		reloadClockedIn();
+	$("#register").click(function() {
+		window.location.href = '/Admin/register.html';
 	});
 	
-	socket.on("getClockedInResponse", function(responses){
-		var text = "";
-		if(responses != undefined){
-			console.log("response: " + responses);
-			for(i = 0; i < responses.length; i++){
-				text+="<span>" + responses[i].StartTime + " " + responses[i].FirstName + "</span><br>";
-			}
-			document.getElementById("clockedIn").innerHTML = text;
-		}
+	$("#viewUsers").click(function() {
+		window.location.href = '/Admin/viewUsers.html';
+	});
+	
+	$("#addDepartment").click(function() {
+		window.location.href = '/Admin/addDepartment.html';
+	});
+	
+	$("#viewDepartment").click(function() {
+		window.location.href = '/Admin/viewDepartment.html';
 	});
 });
