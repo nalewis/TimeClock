@@ -2,6 +2,7 @@ $(document).ready(function() {
 	var socket = io();
 	console.log(socket);
 	console.log("ready");
+	populateDepartments();
 	
 	$("#submit").click(function() {
 		var user = {
@@ -12,8 +13,8 @@ $(document).ready(function() {
 			"email" : $('#email').val(),
 			"pass" : $('#pass').val(),
 			"role" : $('#role').find(":selected").text(),
-			"wage" : "1",
-			"depId" : "1"
+			"wage" : $('#wage').val(),
+			"depId" : $('#department').find(":selected").val()
 		};
 		user = JSON.stringify(user);
 		console.log(user);
@@ -24,5 +25,21 @@ $(document).ready(function() {
 	socket.on("registerResponse", function(data){
 		console.log(data);
 	});
+	
+	socket.on("getDepartmentsResponse", function(responses){
+		if(responses != undefined){
+			responses.forEach(function(item){
+				console.log(item);
+				var node = document.createElement("option");
+				node.text = item.Name;
+				node.value = item.DepartmentID;
+				document.getElementById("department").options.add(node);
+			});
+		}
+	});
+	
+	function populateDepartments(){
+		socket.emit("getDepartments");
+	}
 });
 

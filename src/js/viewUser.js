@@ -12,9 +12,18 @@ $(document).ready(function() {
 		if(response != undefined){
 			response = JSON.parse(response);
 			console.log(response["user"][0]);
+			console.log(response["user"][0]["FirstName"]);
 			document.getElementById("head").innerHTML = response["user"][0]["FirstName"] + " " + response["user"][0]["LastName"];
 			
-			//$("#userInfo").innerHTML = ""
+			document.getElementById("username").textContent = response["user"][0]["Username"];
+			document.getElementById("wage").textContent = response["user"][0]["Wage"];
+			document.getElementById("email").textContent = response["user"][0]["Email"];
+			document.getElementById("department").textContent = response["user"][0]["Name"];
+			if(response["user"][0]["isAdmin"]){
+				document.getElementById("admin").textContent = "Yes";
+			} else {
+				document.getElementById("admin").textContent = "No";
+			}
 			
 			response["timeEntries"].forEach(function(item){
 				console.log(item);

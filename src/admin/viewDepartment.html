@@ -10,7 +10,7 @@
 		<script src="/js/bootstrap.min.js"></script>
 		
 		<link rel="stylesheet" href="/css/app.css">
-		<script src="../js/admin.js"></script>
+		<script src="../js/viewDepartment.js"></script>
     </head>
     <body>
 	
@@ -36,22 +36,19 @@
         </div><!--/.nav-collapse -->
       </div>
     </nav>
-
-	<div class="header">
-		<h1>ISU Time Clock</h1>
-	</div>
 	
-	<h1>Admin View</h1>
+	<h3 id="head"></h3>
 	
 	<br>
-	<fieldset>
-		Actions:<br>
-		<button id="report">View Monthly Report</button>
-		<button id="register">Register New User</button>
-		<button id="viewUsers">View Users</button>
-		<button id="addDepartment">Add Department</button>
-		<button id="viewDepartments">View Departments</button>
-	</fieldset>
+	<div id="departmentInfo">
+		<label for="manager">Manager:</label><br>
+		<span id="manager"></span>
+	</div>
+	<br>
+	<label for="employees">Employees:</label><br>
+	<ul id="employees">
+	
+	</ul>
 
 </body>
 </html>
