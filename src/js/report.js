@@ -2,7 +2,6 @@ $(document).ready(function() {
 	var socket = io();
 	console.log(socket);
 	console.log("ready");
-	var count = 0;
 	
 	getReport();
 	var report;
@@ -14,18 +13,20 @@ $(document).ready(function() {
 			console.log(response);
 			//console.log(response["user"][0]);
 			response.forEach(function(item){
-				var node = document.createElement("span");
-				node.textContent = item["FirstName"] + " " + item["LastName"];
-				document.getElementById("entries").appendChild(node);
-				node = document.createElement("ul");
-				node.setAttribute("id", "list" + count);
-				document.getElementById("entries").appendChild(node);
-
-				node = document.createElement("li"); // Create a <li> node
+				var tableRef = document.getElementById('entries').getElementsByTagName('tbody')[0];
+				var newRow = tableRef.insertRow(tableRef.rows.length);
+				var newCell = newRow.insertCell(0);
+				var newText = document.createTextNode(item["FirstName"] + " " + item["LastName"]);
+				newCell.appendChild(newText);
+				
 				var d = new Date(item["StartTime"]);
-				node.innerHTML = d.toDateString() + " <b>Hours: </b>" + item["Hours"];
-				document.getElementById("list" + count).appendChild(node);
-				count++;
+				newCell = newRow.insertCell(1);
+				newText = document.createTextNode(d.toDateString());
+				newCell.appendChild(newText);
+				
+				newCell = newRow.insertCell(2);
+				newText = document.createTextNode(item["Hours"]);
+				newCell.appendChild(newText);
 			});
 		}
 	});
