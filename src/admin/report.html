@@ -1,21 +1,47 @@
-<HTML>
-<head>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script src="http://localhost:5000/socket.io/socket.io.js"></script>
-<script src="/public/js/report.js"></script>
-</head>
-<body>
-
-<div class="header">
-	<h1>ISU Time Clock</h1>
-</div>
-
-<h1>Time Report</h1>
-
-<br>
-<fieldset>
-
-</fieldset>
+<!doctype html>  
+<html lang="en">  
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<script src="http://localhost:5000/socket.io/socket.io.js"></script>
+		<link rel="stylesheet" href="/css/bootstrap.min.css">
+		<script src="/js/jquery.min.js"></script>
+		<script src="/js/bootstrap.min.js"></script>
+		
+		<link rel="stylesheet" href="/css/app.css">
+		<script src="../js/report.js"></script>
+    </head>
+    <body>
+	
+	<nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">TimeClock</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="/">Home</a></li>
+            <li><a href="/Clock/clocktime.html">Clock</a></li>
+            <li><a href="/Admin/AdminIndex.html">Admin</a></li>
+			<li><a href="/Employee/EmployeeIndex.html">Employee</a></li>
+			<li><a href="/Customer/CustomerIndex.html">Customer</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+	
+	<h3 id="head">Time Report</h3>
+	
+	<div id="entries">
+	
+	</div>
 
 </body>
-</HTML>
+</html>

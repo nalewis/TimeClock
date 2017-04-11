@@ -93,6 +93,13 @@ io.on('connection', function(socket){
 		}
 		getDepartment(callback, id);
 	});
+	
+	socket.on('getReport', function(){
+		var callback = function(resp){
+			socket.emit('getReportResponse', resp);
+		}
+		getReportData(callback);
+	});
 		
     socket.on('login', function (email, password) {
         if(isCustomer){
@@ -260,7 +267,6 @@ function registerUser(callback, user){
 }
 
 function getUsers(callback){
-	console.log('hi');
 	var check = "select * from Employees";
 	connection.query(check, function (err, result) {
 		if(err){
@@ -355,4 +361,19 @@ function getDepartment(callback, id){
 			});
 		}
 	});
+}
+
+function getReportData(callback){
+	var check = "select Employees.FirstName, Employees.LastName, Employees.UserID, TimeEntries.Hours, TimeEntries.StartTime from TimeEntries, Employees where EndTime is not NULL and Employees.UserID = TimeEntries.UserID order by StartTime";
+				
+	connection.query(check, function (err, result2) {
+		if(err){
+			console.log("Get user error: " + err + check);
+		} else {
+			console.log("Get User Result: " + result2);
+			//user["timeEntries"] = result2;
+			console.log(result2);
+			callback(JSON.stringify(result2));
+		}
+	});	
 }
