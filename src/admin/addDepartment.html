@@ -10,7 +10,7 @@
 		<script src="/js/bootstrap.min.js"></script>
 		
 		<link rel="stylesheet" href="/css/app.css">
-		<script src="../js/register.js"></script>
+		<script src="../js/addDepartment.js"></script>
     </head>
     <body>
 	
@@ -32,7 +32,6 @@
             <li><a href="/Admin/AdminIndex.html">Admin</a></li>
 			<li><a href="/Employee/EmployeeIndex.html">Employee</a></li>
 			<li><a href="/Customer/CustomerIndex.html">Customer</a></li>
-			<li><a href="/">Logout</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -41,52 +40,20 @@
 	<div class="container" role="main">
 		<h1>ISU Time Clock</h1>
 		
-		<h1>Signup Form</h1>
+		<h1>Create New Department</h1>
 
 		<form name="form">   
 			<div class="form-group">
-				<label for="firstName">First Name</label><br>
-				<input id="firstName" type="text" name="firstName" required />
+				<label for="name">Department Name</label><br>
+				<input id="name" type="text" name="name" required />
 			</div>
 			<div class="form-group">
-				<label for="lastName">Last Name</label><br>
-				<input id="lastName" type="text"name="lastName" required />
-			</div>
-			<div class="form-group">
-				<label for="username">Username</label><br>
-				<input type="text" name="username" id="username" required/>
-			</div>
-			<div class="form-group">
-				<label for="sid">University ID</label><br>
-				<input type="number" name="uid" id="uid" required/>
-			</div>
-			<div class="form-group">
-				<label for="email">Email</label><br>
-				<input id="email" type="email" name="email" required />
-			</div>
-			<div class="form-group">
-				<label for="pass">Password</label><br>
-				<input type="password" name="pass" id="pass" required />
-			</div>
-			<div class="form-group">
-				<label for="wage">Wage(Hourly)</label><br>
-				<input type="number" name="wage" id="wage" required/>
-			</div>
-			<div class="form-group">
-				<label for="department">Department</label><br>
-				<select id="department" name="department" required>
-				</select>
-			</div>
-			<div class="form-group">
-				<label for="role">Role</label><br>
-				<select id="role" name="role" required>
-					<option value="admin" selected>Admin</option>
-					<option value="employee">Employee</option>
-					<option value="customer">Customer</option>
+				<label for="manager">Manager</label><br>
+				<select id="manager" name="manager" required>
 				</select>
 			</div><br>
 			<div class="submit">
-				<button type="button" name="submit" id="submit">Signup</button>
+				<button type="button" name="submit" id="submit">Create</button>
 				<a href="/Admin/AdminIndex.html" class="btn btn-link">Cancel</a>
 			</div>
 		</form>

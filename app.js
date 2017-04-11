@@ -72,6 +72,27 @@ io.on('connection', function(socket){
 		}
 		getUser(callback, id);
 	});
+	
+	socket.on('addDepartment', function(depo){
+		var callback = function(resp){
+			socket.emit('addDepartmentResponse', resp);
+		}
+		addDepartment(callback, depo);
+	});
+	
+	socket.on('getDepartments', function(){
+		var callback = function(resp){
+			socket.emit('getDepartmentsResponse', resp);
+		}
+		getDepartments(callback);
+	});
+	
+	socket.on('getDepartment', function(id){
+		var callback = function(resp){
+			socket.emit('getDepartmentResponse', resp);
+		}
+		getDepartment(callback, id);
+	});
 		
     socket.on('login', function (email, password) {
         if(isCustomer){
@@ -224,8 +245,8 @@ function registerUser(callback, user){
 		isAdmin = true;
 	}
 	var sql = "Insert into Employees (FirstName, LastName, UserID, Email, Wage, DepartmentID, Username, Password, IsAdmin) VALUES ('"
-	+ user["firstName"] + "', '" + user["lastName"] + "', " + user["uid"] + ", '" + user["email"] + "', '" + user["wage"] + "', '" + user["depId"]
-	+ "', '" + user["username"] + "', '" + user["pass"] + "', " + isAdmin + ")";
+	+ user["firstName"] + "', '" + user["lastName"] + "', " + user["uid"] + ", '" + user["email"] + "', " + user["wage"] + ", " + user["depId"]
+	+ ", '" + user["username"] + "', '" + user["pass"] + "', " + isAdmin + ")";
 	connection.query(sql, function (err, result) {
 		if(err){
 			console.log("Register user error; " + err + sql);
@@ -252,7 +273,7 @@ function getUsers(callback){
 }
 
 function getUser(callback, id){
-	var sql = "Select * from Employees where UserID = " + id;
+	var sql = "Select * from Employees inner join Departments on Employees.DepartmentID = Departments.DepartmentID where UserID = " + id;
 	var userInfo = {
 		"user" : [],
 		"timeEntries" : []
@@ -264,18 +285,74 @@ function getUser(callback, id){
 			console.log("Get User Result: " + result);
 			userInfo["user"] = result;
 			
-				sql = "select * from TimeEntries where EndTime is not NULL and UserID = " + id;
+			sql = "select * from TimeEntries where EndTime is not NULL and UserID = " + id;
 	
-				connection.query(sql, function (err, result) {
-					if(err){
-						console.log("Get user error: " + err + sql);
-					} else {
-						console.log("Get User Result: " + result);
-						userInfo["timeEntries"] = result;
+			connection.query(sql, function (err, result) {
+				if(err){
+					console.log("Get user error: " + err + sql);
+				} else {
+					console.log("Get User Result: " + result);
+					userInfo["timeEntries"] = result;
 
-						callback(JSON.stringify(userInfo));
-					}
-				});
+					callback(JSON.stringify(userInfo));
+				}
+			});
+		}
+	});
+}
+
+function addDepartment(callback, depo){
+	depo = JSON.parse(depo);
+	console.log(depo);
+
+	var sql = "Insert into Departments (Name, ManagerID) VALUES ('" + depo["name"] + "', " + depo["manager"] + ")";
+	connection.query(sql, function (err, result) {
+		if(err){
+			console.log("Add department error; " + err + sql);
+		} else {
+			console.log("Add department result: " + result);
+			callback(result);
+		}
+	});
+}
+
+function getDepartments(callback){
+	var check = "select Departments.Name, Departments.DepartmentID, Employees.FirstName, Employees.LastName, Employees.UserID from Departments inner join Employees on Departments.ManagerID = Employees.UserID";
+	connection.query(check, function (err, result) {
+		if(err){
+			console.log("Get Departments error: " + err + check);
+		} else {
+			console.log(result);
+			callback(result);
+		}
+	});
+}
+
+function getDepartment(callback, id){
+	var sql = "Select * from Departments inner join Employees on Departments.ManagerID = Employees.UserID where Departments.DepartmentID = " + id;
+	var departmentInfo = {
+		"department" : [],
+		"employees" : []
+	};
+	connection.query(sql, function (err, result) {
+		if(err){
+			console.log("Get department error: " + err + sql);
+		} else {
+			console.log("Get Department Result: " + result);
+			departmentInfo["department"] = result;
+			
+			sql = "select * from Employees where DepartmentID = " + id;
+	
+			connection.query(sql, function (err, result) {
+				if(err){
+					console.log("Get employees error: " + err + sql);
+				} else {
+					console.log("Get employees result: " + result);
+					departmentInfo["employees"] = result;
+
+					callback(JSON.stringify(departmentInfo));
+				}
+			});
 		}
 	});
 }

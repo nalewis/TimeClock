@@ -19,7 +19,7 @@ $(document).ready(function() {
 		window.location.href = '/Admin/addDepartment.html';
 	});
 	
-	$("#viewDepartment").click(function() {
-		window.location.href = '/Admin/viewDepartment.html';
+	$("#viewDepartments").click(function() {
+		window.location.href = '/Admin/viewDepartments.html';
 	});
 });
