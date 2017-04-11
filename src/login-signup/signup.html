@@ -1,0 +1,53 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="/css/bootstrap.min.css">
+        <script src="/js/jquery.min.js"></script>
+        <script src="/js/bootstrap.min.js"></script>
+        
+        <link rel="stylesheet" href="/css/app.css">
+        <script src="../js/register.js"></script>
+    </head>
+    <div class="container">
+        <div class="panel">
+        <div class="pageHeader"><h1>Signup Form</h1></div>
+        <form name="form" ng-submit="signup(user)"  role="form" novalidate>   
+        
+        <div class="form-group">
+            <input id="firstName" type="text" id="firstName" placeholder="First Name" class="validate" name="firstName" required />
+        </div>
+        <div class="form-group">
+            <input id="lastName" type="text" id="lastName" placeholder="Last Name" class="validate" name="lastName" required />
+        </div>
+        <div class="form-group">
+            <input type="text" name="username" id="username" placeholder="Username" class="validate" required/>
+        </div>
+        <div class="form-group">
+            <input type="text" name="sid" id="sid" placeholder="Student ID" class="validate" required/>
+        </div>
+        <div class="form-group">
+            <input id="email" type="email" name="email" id="email" placeholder="Email" class="validate" required />
+        </div>
+        <div class="form-group">
+            <input type="password" name="password" id="password" placeholder="Password" class="validate" required />
+        </div>
+        <div class="form-group">
+            <select id="role" name="role" required>
+                    <option value="admin" selected>Admin</option>
+                    <option value="employee">Employee</option>
+                    <option value="customer">Customer</option>
+            </select>
+        </div>    
+        <div class="submit">
+                   <button type="submit" name="sub" class="btn btn-block btn-success">Signup</button>
+                   <a href="#/login" class="btn btn-link">Cancel</a>
+        </div>
+    </form>
+    <div>
+    <style>
+    button:disabled {
+        background-color: #d3d3d3;
+        cursor: not-allowed;
+    }
+    </style>
+    </div>
+</html>

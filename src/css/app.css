@@ -1,10 +1,50 @@
+.clock {width:800px; margin:0 auto; padding:30px;  color:#fff; }
+
+#Date { font-family:'BebasNeueRegular', Arial, Helvetica, sans-serif; font-size:36px; text-align:center; text-shadow:0 0 5px #00c6ff; }
+
+.clock ul { width:800px; margin:0 auto; padding:0px; list-style:none; text-align:center; }
+.clock ul li { display:inline; font-size:8em; text-align:center; font-family:'BebasNeueRegular', Arial, Helvetica, sans-serif; text-shadow:0 0 5px #00c6ff; }
+
+#point { position:relative; -moz-animation:mymove 1s ease infinite; -webkit-animation:mymove 1s ease infinite; padding-left:10px; padding-right:10px; }
+
+.text-white {
+	color: #FFF;
+}
+.padding-10 {
+	padding: 10px;
+}
+.btn-clock {
+	background: #1ab188;
+	color: 	#fff;
+	font-weight: bold;
+	font-size: 1.3em;
+}
+@media (min-width: 768px) {
+.modal-dialog {
+    width: 600px;
+    margin: 10% auto;
+}
+}
+
+/* Simple <a href="http://www.jqueryscript.net/animation/">Animation</a> */
+@-webkit-keyframes mymove 
+{
+0% {opacity:1.0; text-shadow:0 0 20px #00c6ff;}
+50% {opacity:0; text-shadow:none; }
+100% {opacity:1.0; text-shadow:0 0 20px #00c6ff; }	
+}
+
+@-moz-keyframes mymove 
+{
+0% {opacity:1.0; text-shadow:0 0 20px #00c6ff;}
+50% {opacity:0; text-shadow:none; }
+100% {opacity:1.0; text-shadow:0 0 20px #00c6ff; }	
+}
+
 body {
   padding-top: 50px;
 }
 .starter-template {
   padding: 40px 15px;
   text-align: center;
-}
-fieldset {
-	border:1px solid #cecece;
 }

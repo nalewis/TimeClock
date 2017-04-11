@@ -4,40 +4,143 @@
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
-		<script src="js/bootstrap.min.js"></script>
-		<script src="/socket.io/socket.io.js"></script>
 		<link href="css/bootstrap.min.css" rel="stylesheet">
-		<link href="css/app.css" rel="stylesheet">
+    <link href="css/app.css" rel="stylesheet">
+		<script src="/socket.io/socket.io.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/home.js"></script>
+		<script src="js/login.js"></script>
+    <script src="js/register.js"></script>
     </head>
     <body>
 	
-	<nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="/">TimeClock</a>
+    	<nav class="navbar navbar-inverse navbar-fixed-top">
+          <div class="container" >
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="/">TimeClock</a>
+            </div>
+            <div id="navbar" class="collapse navbar-collapse">
+              <ul class="nav navbar-nav">
+                <li class="active default"><a href="/">Home</a></li>
+                <li class="default"><a data-toggle="modal" data-target=".registerModal">Signup</a></li>
+                <li class="default"><a data-toggle="modal" data-target=".loginModal">Login</a></li>
+                <li class="default"><a href="/clock/clocktime.html">Clock</a></li>
+                <li><a href="/Admin/AdminIndex.html">Admin</a></li>
+    			<li><a href="/Employee/EmployeeIndex.html">Employee</a></li>
+    			<li><a href="/Customer/CustomerIndex.html">Customer</a></li>
+          <li><a href="/" class="logout">Logout</a></li>
+              </ul>
+            </div><!--/.nav-collapse -->
+          </div>
+      </nav>
+    	
+      <div style="background: #333; height:100vh;">
+        <div class="container" role="main" >
+            <h1 class="text-center text-white">Welcome to TimeClock</h1>
+            <div class="clock">
+               <div id="Date"></div>
+                  <ul>
+                      <li id="hours"></li>
+                      <li id="point">:</li>
+                      <li id="min"></li>
+                      <li id="point">:</li>
+                      <li id="sec"></li>
+                  </ul>
+            </div>
+          
+          <h1 class="text-center text-white">ISU Time Clock</h1><br/>
+          <div class="col-md-6 col-md-offset-3">
+            <div class="row text-center">
+              <div class="col-xs-6">
+                <button class="btn btn-clock btn-block text-uppercase padding-10">Clock in</button>
+              </div>
+              <div class="col-xs-6">
+            <button class="btn btn-clock btn-block text-uppercase padding-10">Clock out</button>
+              </div>
+                
+              </div>
+            </div>
+          </div>
         </div>
-        <div id="navbar" class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="/">Home</a></li>
-            <li><a href="/Clock/clocktime.html">Clock</a></li>
-            <li><a href="/Admin/AdminIndex.html">Admin</a></li>
-			<li><a href="/Employee/EmployeeIndex.html">Employee</a></li>
-			<li><a href="/Customer/CustomerIndex.html">Customer</a></li>
-          </ul>
-        </div><!--/.nav-collapse -->
       </div>
-    </nav>
 	
-	<div class="container" role="main">
-	    <h1>Welcome to TimeClock</h1>
-	</div>
-	
+      <!-- Modal for login-->
+<div class="modal fade loginModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <div class="pageHeader text-center" ><h1>Login Form </h1></div>
+      </div>
+      <form name="form"  role="form" method="submit">
+      <div class="modal-body">    
+          <div class="form-group">
+              <input type="text" name="email" id="email" style="height:8%" placeholder="Email" class="formCred form-control" required/>
+          </div>
+          <div class="form-group">
+              <input type="password" name="password" id="password" style="height:8%" placeholder="Password" class="formCred form-control"required />
+          </div>        
+      </div>
+      <div class="modal-footer">
+        <a href="/login-signup//signup.html"><button type="button" class="btn btn-block btn-primary">Sign up as User</button></a>
+        <button type="submit" class="btn btn-block btn-success" id="login" >Login</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+      <!-- Modal for register-->
+<div class="modal fade registerModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <div class="pageHeader text-center" ><h1>Signup Form </h1></div>
+      </div>
+      <div class="row">
+      <form name="form" ng-submit="signup(user)"  role="form" class="col-md-8 col-md-offset-2">   
+        <div class="form-group">
+            <input id="firstName" type="text" id="firstName" placeholder="First Name" class="validate form-control" name="firstName" required />
+        </div>
+        <div class="form-group">
+            <input id="lastName" type="text" id="lastName" placeholder="Last Name" class="validate form-control" name="lastName" required />
+        </div>
+        <div class="form-group">
+            <input type="text" name="username" id="username" placeholder="Username" class="validate form-control" required/>
+        </div>
+        <div class="form-group">
+            <input type="text" name="sid" id="sid" placeholder="Student ID" class="validate form-control" required/>
+        </div>
+        <div class="form-group">
+            <input id="email" type="email" name="email" id="email" placeholder="Email" class="validate form-control" required />
+        </div>
+        <div class="form-group">
+            <input type="password" name="password" id="password" placeholder="Password" class="validate form-control" required />
+        </div>
+        <div class="form-group">
+            <select id="role" name="role" required class="form-control">
+                    <option value="admin" selected>Admin</option>
+                    <option value="employee">Employee</option>
+                    <option value="customer">Customer</option>
+            </select>
+        </div>    
+        <div class="submit">
+                   <button type="submit" name="sub" class="btn btn-block btn-success">Signup</button>
+                   </br>
+        </div>
+      </form>
+    </div>
+    </div>
+  </div>
+</div>
+
     </body>
 </html>  

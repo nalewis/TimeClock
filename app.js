@@ -22,8 +22,8 @@ console.log("database connected");
 app.use(express.static(path.join(__dirname, 'src'))); 
 
 app.use(express.static(__dirname + '/node_modules'));
-app.use('/js', express.static(__dirname + '/node_modules/bootstrap/dist/js')); // redirect bootstrap JS
 app.use('/js', express.static(__dirname + '/node_modules/jquery/dist')); // redirect JS jQuery
+app.use('/js', express.static(__dirname + '/node_modules/bootstrap/dist/js')); // redirect bootstrap JS
 app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css')); // redirect CSS bootstrap
 
 app.use('/js', express.static(__dirname + '/src/js')); // redirect JS local

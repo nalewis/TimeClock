@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function() {debugger;
 	var socket = io();
 	console.log(socket);
 	console.log("ready");
