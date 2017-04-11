@@ -364,16 +364,14 @@ function getDepartment(callback, id){
 }
 
 function getReportData(callback){
-	var check = "select Employees.FirstName, Employees.LastName, Employees.UserID, TimeEntries.Hours, TimeEntries.StartTime from TimeEntries, Employees where EndTime is not NULL and Employees.UserID = TimeEntries.UserID order by StartTime";
+	var check = "select Employees.FirstName, Employees.LastName, TimeEntries.Hours, TimeEntries.StartTime, TimeEntries.EndTime from TimeEntries, Employees where EndTime is not NULL and Employees.UserID = TimeEntries.UserID order by StartTime";
 				
-	connection.query(check, function (err, result2) {
+	connection.query(check, function (err, result) {
 		if(err){
 			console.log("Get user error: " + err + check);
 		} else {
-			console.log("Get User Result: " + result2);
-			//user["timeEntries"] = result2;
-			console.log(result2);
-			callback(JSON.stringify(result2));
+			console.log("Get User Result: " + result);
+			callback(JSON.stringify(result));
 		}
 	});	
 }
