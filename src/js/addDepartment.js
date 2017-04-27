@@ -15,10 +15,6 @@ $(document).ready(function() {
 		window.location.href = '/Admin/AdminIndex.html';
 	});
 	
-	socket.on("adminDepartmentResponse", function(data){
-		console.log(data);
-	});
-	
 	function populateManagers(){
 		socket.emit("getUsers");
 	}

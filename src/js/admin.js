@@ -22,4 +22,12 @@ $(document).ready(function() {
 	$("#viewDepartments").click(function() {
 		window.location.href = '/Admin/viewDepartments.html';
 	});
+	
+	$("#registerCustomer").click(function() {
+		window.location.href = '/Admin/registerCustomer.html';
+	});
+	
+	$("#addProject").click(function() {
+		window.location.href = '/Admin/addProject.html';
+	});
 });

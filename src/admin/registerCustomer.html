@@ -10,7 +10,7 @@
 		<script src="/js/bootstrap.min.js"></script>
 		
 		<link rel="stylesheet" href="/css/app.css">
-		<script src="../js/admin.js"></script>
+		<script src="../js/registerCustomer.js"></script>
     </head>
     <body>
 	
@@ -27,33 +27,53 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li class="default"><a href="/">Home</a></li>
-            <li class="default"><a href="/clock/clocktime.html">Clock</a></li>
-            <li class="active"><a href="/Admin/AdminIndex.html">Admin</a></li>
+            <li class="active"><a href="/">Home</a></li>
+            <li><a href="/Clock/clocktime.html">Clock</a></li>
+            <li><a href="/Admin/AdminIndex.html">Admin</a></li>
 			<li><a href="/Employee/EmployeeIndex.html">Employee</a></li>
 			<li><a href="/Customer/CustomerIndex.html">Customer</a></li>
 			<li><a href="/">Logout</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
-  </nav>
-
-	<div class="header">
+    </nav>
+	
+	<div class="container" role="main">
 		<h1>ISU Time Clock</h1>
-	</div>
-	
-	<h1>Admin View</h1>
-	
-	<br>
-	Actions:<br>
-	<button class="btn btn-primary" id="report">View Monthly Report</button>
-	<button class="btn btn-primary" id="register">Register New User</button>
-	<button class="btn btn-primary" id="viewUsers">View Users</button>
-	<button class="btn btn-primary" id="addDepartment">Add Department</button>
-	<button class="btn btn-primary" id="viewDepartments">View Departments</button>
-	
-	<button class="btn btn-primary" id="registerCustomer">Register New Customer</button>
-	<button class="btn btn-primary" id="addProject">Add Project</button>
+		
+		<h1>Customer Signup Form</h1>
 
-</body>
+		<form name="form">   
+			<div class="form-group">
+				<label for="firstName">First Name</label><br>
+				<input id="firstName" type="text" name="firstName" required />
+			</div>
+			<div class="form-group">
+				<label for="lastName">Last Name</label><br>
+				<input id="lastName" type="text"name="lastName" required />
+			</div>
+			<div class="form-group">
+				<label for="username">Username</label><br>
+				<input type="text" name="username" id="username" required/>
+			</div>
+			<div class="form-group">
+				<label for="email">Email</label><br>
+				<input id="email" type="email" name="email" required />
+			</div>
+			<div class="form-group">
+				<label for="pass">Password</label><br>
+				<input type="password" name="pass" id="pass" required />
+			</div>
+			<div class="form-group">
+				<label for="project">Project</label><br>
+				<select id="project" name="project" required>
+				</select>
+			</div>
+			<div class="submit">
+				<button type="button" name="submit" id="submit">Signup</button>
+				<a href="/Admin/AdminIndex.html" class="btn btn-link">Cancel</a>
+			</div>
+		</form>
+	</div>
+
 </html>

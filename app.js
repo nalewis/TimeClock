@@ -59,6 +59,13 @@ io.on('connection', function(socket){
 		registerUser(callback, user);
 	});
 	
+	socket.on('registerCustomer', function(user){
+		var callback = function(resp){
+			socket.emit('registerCustomerResponse', resp);
+		}
+		registerCustomer(callback, user);
+	});
+	
 	socket.on('getUsers', function(){
 		var callback = function(resp){
 			socket.emit('getUsersResponse', resp);
@@ -92,6 +99,20 @@ io.on('connection', function(socket){
 			socket.emit('getDepartmentResponse', resp);
 		}
 		getDepartment(callback, id);
+	});
+	
+	socket.on('getProjects', function(){
+		var callback = function(resp){
+			socket.emit('getProjectsResponse', resp);
+		}
+		getProjects(callback);
+	});
+	
+	socket.on('addProject', function(proj){
+		var callback = function(resp){
+			socket.emit('addProjectResponse', resp);
+		}
+		addProject(callback, proj);
 	});
 	
 	socket.on('getReport', function(){
@@ -266,6 +287,32 @@ function registerUser(callback, user){
 	});
 }
 
+function registerCustomer(callback, user){
+	user = JSON.parse(user);
+	console.log(user);
+	var sql = "Insert into Customers (FirstName, LastName, Email, Username, Password) VALUES ('"
+	+ user["firstName"] + "', '" + user["lastName"] + "', '" + user["email"] + "', '" + user["username"] + "', '" + user["pass"] + "')";
+	connection.query(sql, function (err, result) {
+		if(err){
+			console.log("Register customer error; " + err + sql);
+		} else {
+			console.log(result);
+			sql = "Update Projects join Customers on Customers.username = '" + user["username"] + "' set Projects.CustomerID=Customers.CustomerID  where ProjectID = " + user["projectId"];
+			console.log(sql);
+			connection.query(sql, function (err, result) {
+				if(err){
+					console.log("Register customer project error; " + err + sql);
+				} else {
+					console.log("Register customer project result: " + result);
+					if(callback){
+						callback(result);
+					}
+				}
+			});
+		}
+	});
+}
+
 function getUsers(callback){
 	var check = "select * from Employees";
 	connection.query(check, function (err, result) {
@@ -359,6 +406,33 @@ function getDepartment(callback, id){
 					callback(JSON.stringify(departmentInfo));
 				}
 			});
+		}
+	});
+}
+
+function getProjects(callback){
+	var check = "select * from Projects";
+	connection.query(check, function (err, result) {
+		if(err){
+			console.log("Get Projects error: " + err + check);
+		} else {
+			console.log(result);
+			callback(result);
+		}
+	});
+}
+
+function addProject(callback, proj){
+	proj = JSON.parse(proj);
+	console.log(proj);
+
+	var sql = "Insert into Projects (Name, DepartmentID, ExpectedHours) VALUES ('" + proj["name"] + "', " + proj["department"] + ", " + proj["expected"] + ")";
+	connection.query(sql, function (err, result) {
+		if(err){
+			console.log("Add Project error; " + err + sql);
+		} else {
+			console.log("Add Project result: " + result);
+			callback(result);
 		}
 	});
 }
