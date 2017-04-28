@@ -1,7 +1,7 @@
 $(document).ready(function() {
 	var socket = io();
 	console.log(socket);
-	console.log("ready");
+	console.log(md5("ready"));
 	populateDepartments();
 	
 	$("#submit").click(function() {
@@ -11,7 +11,7 @@ $(document).ready(function() {
 			"username" : $('#username').val(),
 			"uid" : $('#uid').val(),
 			"email" : $('#email').val(),
-			"pass" : $('#pass').val(),
+			"pass" : md5($('#pass').val()),
 			"role" : $('#role').find(":selected").text(),
 			"wage" : $('#wage').val(),
 			"depId" : $('#department').find(":selected").val()
