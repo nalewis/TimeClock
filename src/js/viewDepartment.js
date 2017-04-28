@@ -7,6 +7,7 @@ $(document).ready(function() {
 	var id = a.substring(a.indexOf("=")+1);
 	console.log(id);
 	getDepartment(id);
+	getDepartmentProjects(id);
 	
 	socket.on("getDepartmentResponse", function(response){
 		if(response != undefined){
@@ -26,7 +27,24 @@ $(document).ready(function() {
 		}
 	});
 	
+	socket.on("getDepartmentProjectsResponse", function(response){
+		if(response != undefined){
+			console.log(response);
+			
+			response.forEach(function(item){
+				console.log(item);
+				var node = document.createElement("li"); // Create a <li> node
+				node.innerHTML = item["Name"] + " <a href='/Customer/viewProject.html?id=" + item["ProjectID"] + "'>View</a>";
+				document.getElementById("projects").appendChild(node);
+			});
+		}
+	});
+	
 	function getDepartment(id){
 		socket.emit("getDepartment", id);
+	}
+	
+	function getDepartmentProjects(id){
+		socket.emit("getDepartmentProjects", id);
 	}
 });

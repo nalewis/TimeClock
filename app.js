@@ -101,11 +101,25 @@ io.on('connection', function(socket){
 		getDepartment(callback, id);
 	});
 	
+	socket.on('getDepartmentProjects', function(id){
+		var callback = function(resp){
+			socket.emit('getDepartmentProjectsResponse', resp);
+		}
+		getDepartmentProjects(callback, id);
+	});
+	
 	socket.on('getProjects', function(){
 		var callback = function(resp){
 			socket.emit('getProjectsResponse', resp);
 		}
 		getProjects(callback);
+	});
+	
+	socket.on('getProject', function(id){
+		var callback = function(resp){
+			socket.emit('getProjectResponse', resp);
+		}
+		getProjects(callback, id);
 	});
 	
 	socket.on('addProject', function(proj){
@@ -298,7 +312,6 @@ function registerCustomer(callback, user){
 		} else {
 			console.log(result);
 			sql = "Update Projects join Customers on Customers.username = '" + user["username"] + "' set Projects.CustomerID=Customers.CustomerID  where ProjectID = " + user["projectId"];
-			console.log(sql);
 			connection.query(sql, function (err, result) {
 				if(err){
 					console.log("Register customer project error; " + err + sql);
@@ -410,13 +423,36 @@ function getDepartment(callback, id){
 	});
 }
 
+function getDepartmentProjects(callback, id){
+	var sql = "Select * from Projects where DepartmentID = " + id;
+
+	connection.query(sql, function (err, result) {
+		if(err){
+			console.log("Get department projects error: " + err + sql);
+		} else {
+			console.log("Get Department projects Result: " + result);
+			callback(result);
+		}
+	});
+}
+
 function getProjects(callback){
 	var check = "select * from Projects";
 	connection.query(check, function (err, result) {
 		if(err){
 			console.log("Get Projects error: " + err + check);
 		} else {
-			console.log(result);
+			callback(result);
+		}
+	});
+}
+
+function getProject(callback, id){
+	var check = "select * from Projects where ProjectID=" + id;
+	connection.query(check, function (err, result) {
+		if(err){
+			console.log("Get Project error: " + err + check);
+		} else {
 			callback(result);
 		}
 	});
