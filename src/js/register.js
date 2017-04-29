@@ -26,7 +26,7 @@ $(document).ready(function() {
 		console.log(data);
 	});
 	
-	socket.on("getDepartmentsResponse", function(responses){
+	socket.on("getAllDepartmentsResponse", function(responses){
 		if(responses != undefined){
 			responses.forEach(function(item){
 				console.log(item);
@@ -39,7 +39,7 @@ $(document).ready(function() {
 	});
 	
 	function populateDepartments(){
-		socket.emit("getDepartments");
+		socket.emit("getAllDepartments");
 	}
 });
 

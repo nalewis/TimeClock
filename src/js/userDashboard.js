@@ -26,21 +26,26 @@ $(document).ready(function() {
 			}
 			
 			getDepartmentProjects(response["user"][0]["DepartmentID"]);
-			
+			console.log(response["timeEntries"]);
 			response["timeEntries"].forEach(function(item){
-				console.log(item);
-				var node = document.createElement("li"); // Create a <li> node
-				var d = new Date(item["StartTime"]);
-				console.log(d);
-				if(item["ProjectID"] == undefined){
-					node.innerHTML = d.toDateString() + " <b>Hours: </b>" + item["Hours"] + " <button>Assign</button>";
-					node.value = item["ID"]
-					node.addEventListener("click", assignTime(node.value));
-				} else {
-					//node.innerHTML = d.toDateString() + " <b>Hours: </b>" + item["Hours"] + " " + item[";
+				if(item != undefined){
+					console.log(item);
+					var node = document.createElement("li"); // Create a <li> node
+					var d = new Date(item["StartTime"]);
+					console.log(d);
+					if(item["ProjectID"] == undefined){
+						node.innerHTML = d.toDateString() + " <b>Hours: </b>" + item["Hours"] + " <button id='" + item["ID"] + "assign'>Assign</button>";
+						node.value = item["ID"]
+						
+					} else {
+						node.innerHTML = d.toDateString() + " <b>Hours: </b>" + item["Hours"] + " <a href=/Customer/viewProject.html?id=" + item["ProjectID"] + ">Assigned</a>";
+					}
+					
+					document.getElementById("timeEntries").appendChild(node);
+					if(item["ProjectID"] == undefined){
+						document.getElementById(item["ID"] + "assign").addEventListener("click", function(){assignTime(item["ID"])});
+					}
 				}
-				
-				document.getElementById("timeEntries").appendChild(node);
 			});
 		}
 	});
@@ -55,7 +60,11 @@ $(document).ready(function() {
 				document.getElementById("projects").options.add(node);
 			});
 		}
-	})
+	});
+	
+	socket.on("assignTimeResponse", function(response){
+		window.location.reload();
+	});
 	
 	function getUser(id){
 		socket.emit("getUser", id);
@@ -66,6 +75,14 @@ $(document).ready(function() {
 	}
 	
 	function assignTime(id){
-		console.log(id);
+		projId = $('#projects').find(":selected").val();
+		console.log(projId);
+		var data = {
+			"id" : id,
+			"projId" : projId,
+		};
+		
+		data = JSON.stringify(data);
+		socket.emit("assignTime", data);
 	}
 });

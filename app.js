@@ -87,6 +87,13 @@ io.on('connection', function(socket){
 		addDepartment(callback, depo);
 	});
 	
+	socket.on('getAllDepartments', function(){
+		var callback = function(resp){
+			socket.emit('getAllDepartmentsResponse', resp);
+		}
+		getAllDepartments(callback);
+	});
+	
 	socket.on('getDepartments', function(){
 		var callback = function(resp){
 			socket.emit('getDepartmentsResponse', resp);
@@ -122,6 +129,13 @@ io.on('connection', function(socket){
 		getProjects(callback, id);
 	});
 	
+	socket.on('getTotalProjectHours', function(id){
+		var callback = function(resp){
+			socket.emit('getTotalProjectHoursResponse', resp);
+		}
+		getTotalProjectHours(callback, id);
+	});
+	
 	socket.on('addProject', function(proj){
 		var callback = function(resp){
 			socket.emit('addProjectResponse', resp);
@@ -134,6 +148,13 @@ io.on('connection', function(socket){
 			socket.emit('getReportResponse', resp);
 		}
 		getReportData(callback);
+	});
+	
+	socket.on('assignTime', function(data){
+		var callback = function(resp){
+			socket.emit('assignTimeResponse', resp);
+		}
+		assignTime(callback, data);
 	});
 		
     socket.on('login', function (email, password) {
@@ -159,45 +180,6 @@ server.listen(4000, function(){
 io.listen(5000);
 console.log("Web sockets readied");
 
-
-//Database Classes
-var Employee = function (FirstName, LastName, UserID, Wage, DepartmentID, Email, TimeEntries){
-	this.FirstName = FirstName;
-	this.LastName = LastName;
-	this.UserID = UserID;
-	this.Wage = Wage;
-	this.DepartmentID = DepartmentID;
-	this.Email = Email;
-	this.TimeEntries = TimeEntries;
-}
-var Customer = function (Name, CustomerID, Email, Wage, DepartmentID, Email, Projects){
-	this.Name = Name;
-	this.CustomerID = CustomerID;
-	this.Email = Email;
-	this.Projects = Projects;
-}
-var Project = function (Name, ProjectID, DepartmentID, CustomerID, ExpectedHours, BillDue, BillTotal){
-	this.Name = Name;
-	this.ProjectID = ProjectID;
-	this.DepartmentID = DepartmentID;
-	this.CustomerID = CustomerID;
-	this.ExpectedHours = ExpectedHours;
-	this.BillDue = BillDue;
-	this.BillTotal = BillTotal;
-}
-var Department = function (Name, DepartmentID, ManagerID, Projects, Employees){
-	this.Name = Name;
-	this.DepartmentID = DepartmentID;
-	this.ManagerID = ManagerID;
-	this.Projects = Projects;
-	this.Employees = Employees;
-}
-var TimeEntry = function (Name, CustomerID, Email, Wage, DepartmentID, Email, Projects){
-	this.Name = Name;
-	this.CustomerID = CustomerID;
-	this.Email = Email;
-	this.Projects = Projects;
-}
 //Login class Identifier
 function isCustomer(email,password){
 	var sql = "SELECT * FROM Customers WHERE Email = '"+mysql.escape(email)+"' AND Password = '"+mysql.escape(password)+"';";
@@ -229,6 +211,7 @@ function isManager(email,password){
             }
         })
 }
+
 //PostObject Methods
 function clocktime(callback, pastId){
 	var userId = mysql.escape(pastId);
@@ -382,6 +365,18 @@ function addDepartment(callback, depo){
 	});
 }
 
+function getAllDepartments(callback){
+	var check = "select Departments.Name, Departments.DepartmentID from Departments";
+	connection.query(check, function (err, result) {
+		if(err){
+			console.log("Get Departments error: " + err + check);
+		} else {
+			console.log(result);
+			callback(result);
+		}
+	});
+}
+
 function getDepartments(callback){
 	var check = "select Departments.Name, Departments.DepartmentID, Employees.FirstName, Employees.LastName, Employees.UserID from Departments inner join Employees on Departments.ManagerID = Employees.UserID";
 	connection.query(check, function (err, result) {
@@ -458,6 +453,19 @@ function getProject(callback, id){
 	});
 }
 
+function getTotalProjectHours(callback, id){
+	var check = "select * from TimeEntries where ProjectID=" + id;
+	connection.query(check, function (err, result) {
+		if(err){
+			console.log("Get Project error: " + err + check);
+		} else {
+			console.log("Get Project hours result");
+			console.log(result);
+			callback(result);
+		}
+	});
+}
+
 function addProject(callback, proj){
 	proj = JSON.parse(proj);
 	console.log(proj);
@@ -484,4 +492,19 @@ function getReportData(callback){
 			callback(JSON.stringify(result));
 		}
 	});	
+}
+
+function assignTime(callback, data){
+	data = JSON.parse(data);
+	console.log(data);
+
+	var sql = "UPDATE TimeEntries set ProjectID=" + data["projId"] + " where ID=" + data["id"];
+	connection.query(sql, function (err, result) {
+		if(err){
+			console.log("Assign Time error; " + err + sql);
+		} else {
+			console.log("Assign Time result: " + result);
+			callback(result);
+		}
+	});
 }

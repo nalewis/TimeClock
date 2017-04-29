@@ -18,7 +18,6 @@ $(document).ready(function() {
 			document.getElementById("due").textContent = response["BillDue"];
 			
 			//hours spent
-			//TODO
 			getTotalProjectHours(response["ProjectID"])
 			//department info
 			getDepartment(response["DepartmentID"]);
@@ -36,11 +35,31 @@ $(document).ready(function() {
 		}
 	});
 	
+	socket.on("getTotalProjectHoursResponse", function(response){
+		if(response != undefined){
+			console.log(response);
+			var totalHours = 0;
+			response.forEach(function(item){
+				totalHours += item.Hours;
+				console.log(item.Hours);
+			});
+			
+			var totalCost = (totalHours * 10).toFixed(2);
+			document.getElementById("hours").textContent = totalHours;
+			
+			document.getElementById("due").textContent = "$" + totalCost;
+		}
+	});
+	
 	function getProject(id){
 		socket.emit("getProject", id);
 	}
 	
 	function getDepartment(id){
 		socket.emit("getDepartment", id);
+	}
+	
+	function getTotalProjectHours(id){
+		socket.emit("getTotalProjectHours", id);
 	}
 });
