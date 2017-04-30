@@ -19,7 +19,8 @@ $(document).ready(function() {
 			document.getElementById("wage").textContent = response["user"][0]["Wage"];
 			document.getElementById("email").textContent = response["user"][0]["Email"];
 			document.getElementById("department").textContent = response["user"][0]["Name"];
-			if(response["user"][0]["isAdmin"]){
+
+			if(response["user"][0]["IsAdmin"]){
 				document.getElementById("admin").textContent = "Yes";
 			} else {
 				document.getElementById("admin").textContent = "No";

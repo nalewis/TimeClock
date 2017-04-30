@@ -8,7 +8,7 @@ var path = require('path');
 
 var connection = mysql.createConnection(
     {
-        host: 'us-cdbr-azure-east-c.cloudapp.net',
+		host: 'us-cdbr-azure-east-c.cloudapp.net',
         user: 'b2291f79d4737a',
         password: '8569c35a',
         database: 'timeclock2',
@@ -126,7 +126,7 @@ io.on('connection', function(socket){
 		var callback = function(resp){
 			socket.emit('getProjectResponse', resp);
 		}
-		getProjects(callback, id);
+		getProject(callback, id);
 	});
 	
 	socket.on('getTotalProjectHours', function(id){
@@ -448,6 +448,8 @@ function getProject(callback, id){
 		if(err){
 			console.log("Get Project error: " + err + check);
 		} else {
+			console.log("project result: ");
+			console.log(result);
 			callback(result);
 		}
 	});

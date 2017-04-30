@@ -20,7 +20,7 @@ $(document).ready(function() {
 		if(responses != undefined){
 			console.log("response: " + responses);
 			for(i = 0; i < responses.length; i++){
-				text+="<span>" + new Date(responses[i].StartTime) + " <b>" + responses[i].FirstName + "</b></span><br>";
+				text+="<span><b>" + responses[i].FirstName + "</b>: " + new Date(responses[i].StartTime) + "</span><br>:";
 			}
 			document.getElementById("clockedIn").innerHTML = text;
 		}

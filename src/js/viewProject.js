@@ -10,7 +10,6 @@ $(document).ready(function() {
 	
 	socket.on("getProjectResponse", function(response){
 		if(response != undefined){
-			console.log(response);
 			response = response[0];
 			document.getElementById("head").innerHTML = response["Name"];
 			
